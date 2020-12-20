@@ -1,0 +1,117 @@
+<div class="row" [nbSpinner]="isLoad" nbSpinnerSize="giant" nbSpinnerStatus="primary">
+  <div class="col-lg-12">
+    <nb-card>
+      <nb-card-header class="d-flex">
+        <label>{{ 'products.title' | translate }}</label>
+        <button nbButton status="primary" size="tiny" class="ml-auto" (click)="editUsers(null)">
+          <nb-icon icon="plus" pack="eva"></nb-icon>
+          {{ 'products.title_add' | translate }}
+        </button>
+      </nb-card-header>
+      <nb-card-body>
+        <form [formGroup]="inputForm">
+          <div class="mb-4">
+            <div class="row">
+              <div class="col-lg-4 form-group">
+                <label class="label">
+                  {{ 'common.table.item_product_code' | translate }}
+                </label>
+                <input (keyup.enter)="search(0)" nbInput fullWidth formControlName="code">
+              </div>
+              <div class="col-lg-4 form-group">
+                <label class="label">
+                  {{ 'common.table.item_product_name' | translate }}
+                </label>
+                <input (keyup.enter)="search(0)" nbInput fullWidth formControlName="name">
+              </div>
+              <div class="col-lg-4 form-group">
+                <label class="label">
+                  {{ 'common.table.item_status' | translate }}
+                </label>
+                <ng-select fullWidth appendTo="body"
+                           placeholder="{{'common.placeHolder' |translate}}"
+                           notFoundText="{{'common.notFoundText' |translate}}"
+                           clearAllText="{{'common.clearAllText' |translate}}"
+                           formControlName="status">
+                  <ng-option *ngFor="let item of listStatus" [value]="item.code"> {{ item.name | translate }}
+                  </ng-option>
+                </ng-select>
+              </div>
+            </div>
+            <div class="col-12 text-center">
+              <button nbButton status="primary" type="submit" (click)="search(0)">{{ 'common.search' | translate }}
+                <nb-icon icon="search-outline"></nb-icon>
+              </button>
+            </div>
+          </div>
+        </form>
+        <ngx-datatable ngxResizeWatcher class="material"
+                       [columnMode]="'flex'"
+                       [rows]="rows"
+                       [columns]="columns"
+                       rowHeight="auto"
+                       [externalPaging]="true"
+                       [count]="page.count"
+                       [offset]="page.offset"
+                       [limit]="page.limit"
+                       [footerHeight]="50"
+                       [headerHeight]="50"
+                       (page)="pageCallback($event)"
+                       [messages]="{ emptyMessage: 'common.notFoundText' | translate, totalMessage: 'common.totalMessage' | translate }">
+          <ng-container *ngFor="let col of columns">
+            <ngx-datatable-column prop="{{col.prop}}" name="{{col.name}}" [flexGrow]="col.flexGrow">
+              <ng-template let-column="column" ngx-datatable-header-template>
+                {{ column.name | translate }}
+              </ng-template>
+              <ng-template let-value="value" ngx-datatable-cell-template let-row="row" let-rowIndex='rowIndex'>
+                <ng-container *ngIf="col.prop ==='index'" class="index-col">
+                  {{ page.offset * page.limit + rowIndex + 1 }}
+                </ng-container>
+                <ng-container
+                  *ngIf="col.prop ==='code' || col.prop ==='name' || col.prop ==='parenObject' || col.prop ==='totalProduct' "
+                  class="text-right">
+                  <span class="row-data-show"
+                        title="{{value}}">{{value.length > 50 ? value.substring(0, 50).concat('...') : value}}</span>
+                </ng-container>
+                <ng-container
+                  *ngIf="col.prop ==='price'"
+                  class="text-right">
+                  <span class="row-data-show"
+                        title="{{value}}">{{value}} </span>
+                </ng-container>
+                <ng-container *ngIf="col.prop ==='updateTime'">
+                  {{ value | date:'dd/MM/yyyy HH:mm:ss'}}
+                </ng-container>
+                <ng-container *ngIf="col.prop ==='status'">
+                  {{  'common.state.' + value | translate }}
+                </ng-container>
+                <ng-container *ngIf="col.prop === 'map_size_color'">
+                  <button class="p-1" nbButton ghost status="info" (click)="openMapModule(row)">
+                    <nb-icon icon="link-outline" pack="eva" size="tiny"></nb-icon>
+                  </button>
+                </ng-container>
+                <ng-container *ngIf="col.prop === 'map_image'">
+                  <button class="p-1" nbButton ghost status="info" (click)="openMapModuleImage(row)">
+                    <nb-icon icon="link-outline" pack="eva" size="tiny"></nb-icon>
+                  </button>
+                </ng-container>
+                <ng-container *ngIf="col.prop ==='action_btn'" class="text-right">
+                  <div>
+                    <button class="p-1" nbButton status="info" ghost title="{{ 'common.edit' | translate}}"
+                            (click)="editUsers(row)">
+                      <nb-icon icon="edit-outline" pack="eva" size="tiny"></nb-icon>
+                    </button>
+                    <button class="p-1" nbButton status="danger" ghost title="{{ 'common.delete' | translate }}"
+                            (click)="deleteUsers(row)">
+                      <nb-icon icon="trash-2-outline" pack="eva" size="tiny"></nb-icon>
+                    </button>
+                  </div>
+                </ng-container>
+              </ng-template>
+            </ngx-datatable-column>
+          </ng-container>
+        </ngx-datatable>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>

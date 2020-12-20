@@ -1,0 +1,145 @@
+<nb-card style="position: relative" [nbSpinner]="loading" fullWidth>
+  <nb-card-header class="card-header-title">{{ title }}
+    <div class="bt-action">
+        <span>
+          <button ghost size="tiny" nbButton class="objLink float-right" (click)="ref.close()">
+            <nb-icon icon="close-outline"></nb-icon>
+          </button>
+        </span>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="inputUser">
+      <div class="mb-4">
+        <div class="row">
+          <div class="col-lg-6 form-group">
+            <label class="label">
+              {{ 'common.table.item_username' | translate }} <span style="color: red">(*)</span>
+            </label>
+            <input class="custom-border" type="text" formControlName="name" nbInput fullWidth trim="blur"
+                   [ngClass]="{'status-danger': this.inputUser.get('name').touched && this.inputUser.get('name').errors}">
+            <ngx-inline-message [message]="'common.table.item_username'|translate"
+                                [formName]="inputUser.get('name')"></ngx-inline-message>
+          </div>
+          <div class="col-lg-6 form-group">
+            <label class="label">
+              {{ 'common.table.item_fullname' | translate }} <span style="color: red">(*)</span>
+            </label>
+            <input class="custom-border" formControlName="fullname" type="text" nbInput fullWidth trim="blur"
+                   [ngClass]="{'status-danger': this.inputUser.get('fullname').touched && this.inputUser.get('fullname').errors}">
+            <ngx-inline-message [message]="'common.table.item_fullname'|translate"
+                                [formName]="inputUser.get('fullname')"></ngx-inline-message>
+          </div>
+          <div class="col-lg-6 form-group">
+            <label class="label">
+              {{ 'common.table.item_tel' | translate}}
+            </label>
+            <input class="custom-border" formControlName="phone" type="text" nbInput fullWidth trim="blur"
+                   [ngClass]="{'status-danger': this.inputUser.get('phone').touched && this.inputUser.get('phone').errors}">
+            <ngx-inline-message [message]="'common.table.item_tel'|translate"
+                                [formName]="inputUser.get('phone')"></ngx-inline-message>
+          </div>
+          <div class="col-lg-6 form-group">
+            <label class="label">
+              {{ 'common.table.item_email' | translate }} <span style="color: red">(*)</span>
+            </label>
+            <input class="custom-border" formControlName="mail" type="text" nbInput fullWidth trim="blur"
+                   [ngClass]="{'status-danger': this.inputUser.get('mail').touched && this.inputUser.get('mail').errors}">
+            <ngx-inline-message [message]="'common.table.item_email'|translate"
+                                [formName]="inputUser.get('mail')"></ngx-inline-message>
+          </div>
+          <div class="col-lg-6 form-group">
+            <label class="label input-icon -show">
+              {{ 'common.table.item_passwordHash' | translate }} <span *ngIf="!this.data" style="color: red">(*)</span>
+            </label>
+            <nb-form-field>
+              <input *ngIf="!this.data" style="cursor: pointer" class="custom-border" disabled formControlName="pass"
+                     [type]="getInputType(1)" nbInput
+                     fullWidth
+                     [ngClass]="{'status-danger': this.inputUser.get('pass').touched && this.inputUser.get('pass').errors}">
+              <input *ngIf="this.data" class="custom-border" formControlName="pass" [type]="getInputType(1)" nbInput
+                     fullWidth
+                     [ngClass]="{'status-danger': this.inputUser.get('pass').touched && this.inputUser.get('pass').errors}">
+              <button nbSuffix nbButton ghost (click)="toggleShowPassword(1)">
+                <nb-icon [icon]="showPassword ? 'eye-outline' : 'eye-off-2-outline'"
+                         pack="eva"
+                         [attr.aria-label]="showPassword ? 'hide password' : 'show password'">
+                </nb-icon>
+              </button>
+            </nb-form-field>
+            <ngx-inline-message [message]="'common.table.item_passwordHash'|translate"
+                                  [formName]="inputUser.get('pass')"></ngx-inline-message>
+          </div>
+          <div *ngIf="this.data" class="col-lg-6 form-group">
+            <label class="label">
+              {{ 'common.table.item_repassword' | translate }} <span *ngIf="!this.data" style="color: red">(*)</span>
+            </label>
+            <nb-form-field>
+
+            <input class="custom-border" formControlName="rePassword" [type]="getInputType(2)" nbInput
+                   fullWidth
+                   [ngClass]="{'status-danger': this.inputUser.get('rePassword').touched && this.inputUser.get('rePassword').errors}">
+
+            <ngx-inline-message [message]="'common.table.item_repassword'|translate"
+                                [formName]="inputUser.get('rePassword')"></ngx-inline-message>
+              <button nbSuffix nbButton ghost (click)="toggleShowPassword(2)">
+                <nb-icon [icon]="showPassword1 ? 'eye-outline' : 'eye-off-2-outline'"
+                         pack="eva"
+                         [attr.aria-label]="showPassword1 ? 'hide password' : 'show password'">
+                </nb-icon>
+              </button>
+            </nb-form-field>
+
+            <ngx-inline-message [message]="'common.table.item_repassword'|translate"
+                                  [formName]="inputUser.get('rePassword')"></ngx-inline-message>
+
+          </div>
+          <div class="col-lg-6 form-group">
+            <label class="label">
+              {{ 'common.table.item_imageUrl' | translate }}
+            </label>
+            <input class="custom-border" formControlName="imageUrl" type="text" nbInput fullWidth trim="blur"
+                   [ngClass]="{'status-danger': this.inputUser.get('imageUrl').touched && this.inputUser.get('imageUrl').errors}">
+          </div>
+          <div class="col-lg-6 form-group">
+            <label class="label">
+              {{ 'common.table.item_orBirthUser' | translate }} <span style="color: red">(*)</span>
+            </label>
+            <input class="custom-border" nbInput fullWidth
+                   formControlName="orBirthUser"
+                   [nbDatepicker]="fromDate" [ngClass]="{'status-danger': this.inputUser.get('orBirthUser').touched && this.inputUser.get('orBirthUser').errors}"
+            >
+            <nb-datepicker #fromDate format="{{'common.format_date' |translate}}">
+            </nb-datepicker>
+            <ngx-inline-message [message]="'common.table.item_orBirthUser'|translate"
+                                [formName]="inputUser.get('orBirthUser')"></ngx-inline-message>
+          </div>
+          <div class="col-lg-6 form-group">
+            <label class="label">{{ 'common.table.item_role' | translate }}</label>
+            <ng-select [clearAllText]="'common.clearAllText'"
+                       placeholder="{{'common.placeHolder' |translate}}"
+                       notFoundText="{{'common.notFoundText' |translate}}"
+                       fullWidth formControlName="lstRole" [multiple]="true">
+              <ng-option *ngFor="let item of lstRole1" [value]="item.id">
+                <span title="{{item.name | translate }}" class="cut-text"> {{ item.name | translate }}</span>
+              </ng-option>
+            </ng-select>
+          </div>
+          <div class="col-lg-6 form-group">
+            <label class="label">
+              {{ 'common.table.item_status' | translate }} <span style="color: red">(*)</span>
+            </label>
+            <nb-toggle style="display: block !important;" fullWidth formControlName="status"></nb-toggle>
+            <ngx-inline-message [message]="'common.table.item_status'|translate"
+                                [formName]="inputUser.get('status')"></ngx-inline-message>
+          </div>
+        </div>
+      </div>
+    </form>
+  </nb-card-body>
+  <nb-card-footer class="text-right">
+    <button nbButton [disabled]="inputUser.invalid" type="button" status="primary" (click)="submit()"
+            id="dialogCancelBtn">{{ 'common.save' | translate }}</button>
+    <button nbButton type="button" nbButton (click)="cancel()" class="ml-2"> {{ 'common.cancel' | translate }} </button>
+  </nb-card-footer>
+</nb-card>

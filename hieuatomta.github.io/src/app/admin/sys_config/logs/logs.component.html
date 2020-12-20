@@ -1,0 +1,87 @@
+<div class="row" [nbSpinner]="isLoad" nbSpinnerSize="giant" nbSpinnerStatus="primary">
+  <div class="col-lg-12">
+    <nb-card>
+      <nb-card-header class="d-flex">
+        <label>{{ 'logs.title' | translate }}</label>
+      </nb-card-header>
+      <nb-card-body>
+        <form [formGroup]="inputForm">
+          <div class="mb-4">
+            <div class="row">
+              <div class="col-lg-4 form-group">
+                <label class="label">
+                  {{ 'common.table.item_logs_name' | translate }}
+                </label>
+                <input (keyup.enter)="search(0)" nbInput fullWidth formControlName="userImpact">
+              </div>
+              <div class="col-lg-4 form-group">
+                <label class="label">
+                  {{ 'common.table.item_action' | translate }}
+                </label>
+                <input (keyup.enter)="search(0)" nbInput fullWidth formControlName="codeAction">
+              </div>
+              <div class="col-lg-4 form-group">
+                <label class="label">
+                  {{ 'common.table.item_log_ip' | translate }}
+                </label>
+                <input (keyup.enter)="search(0)" nbInput fullWidth formControlName="ip">
+              </div>
+              <div class="col-lg-4 form-group">
+                <label class="label">
+                  {{ 'common.table.item_impact_time' | translate }}
+                </label>
+                <input class="custom-border" nbInput fullWidth
+                       formControlName="impactTime"
+                       [nbDatepicker]="fromDate" [ngClass]="{'status-danger': this.inputForm.get('impactTime').touched && this.inputForm.get('impactTime').errors}"
+                >
+                <nb-datepicker #fromDate format="{{'common.format_date' |translate}}">
+                </nb-datepicker>
+<!--                <input (keyup.enter)="search(0)" nbInput fullWidth formControlName="impactTime">-->
+              </div>
+            </div>
+            <div class="col-12 text-center">
+              <button nbButton status="primary" type="submit" (click)="search(0)">{{ 'common.search' | translate }}
+                <nb-icon icon="search-outline"></nb-icon>
+              </button>
+            </div>
+          </div>
+        </form>
+        <ngx-datatable ngxResizeWatcher class="material"
+                       [columnMode]="'flex'"
+                       [rows]="rows"
+                       [columns]="columns"
+                       rowHeight="auto"
+                       [externalPaging]="true"
+                       [count]="page.count"
+                       [offset]="page.offset"
+                       [limit]="page.limit"
+                       [footerHeight]="50"
+                       [headerHeight]="50"
+                       (page)="pageCallback($event)"
+                       [messages]="{ emptyMessage: 'common.notFoundText' | translate, totalMessage: 'common.totalMessage' | translate }">
+          <ng-container *ngFor="let col of columns">
+            <ngx-datatable-column prop="{{col.prop}}" name="{{col.name}}" [flexGrow]="col.flexGrow">
+              <ng-template let-column="column" ngx-datatable-header-template>
+                {{ column.name | translate }}
+              </ng-template>
+              <ng-template let-value="value" ngx-datatable-cell-template let-row="row" let-rowIndex='rowIndex'>
+                <ng-container *ngIf="col.prop ==='index'" class="index-col">
+                  {{ page.offset * page.limit + rowIndex + 1 }}
+                </ng-container>
+                <ng-container
+                  *ngIf="col.prop ==='codeAction' || col.prop ==='userImpact' || col.prop ==='content' || col.prop ==='nameClient' || col.prop ==='ip'"
+                  class="text-right">
+                  <span class="row-data-show"
+                        title="{{value}}">{{value.length > 50 ? value.substring(0, 50).concat('...') : value}}</span>
+                </ng-container>
+                <ng-container *ngIf="col.prop ==='impactTime'">
+                  {{ value | date:'dd/MM/yyyy HH:mm:ss'}}
+                </ng-container>
+              </ng-template>
+            </ngx-datatable-column>
+          </ng-container>
+        </ngx-datatable>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>

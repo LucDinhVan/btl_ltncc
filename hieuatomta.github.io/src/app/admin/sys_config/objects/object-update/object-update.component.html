@@ -1,0 +1,95 @@
+<nb-card nbSpinnerSize="giant" nbSpinnerStatus="primary" [nbSpinner]="loading" fullWidth>
+  <nb-card-header class="card-header-title">{{ title }}</nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="inputObject">
+      <div class="mb-4">
+        <div class="row">
+          <div class="col-lg-6 form-group">
+            <label class="label">
+              {{ 'common.table.item_objects_code' | translate }} <span style="color: red">(*)</span>
+            </label>
+            <input type="text" formControlName="code" nbInput fullWidth trim="blur"
+                   [ngClass]="{'status-danger': this.inputObject.get('code').touched && this.inputObject.get('code').errors}">
+            <ngx-inline-message [message]="'common.table.item_objects_code'|translate"
+                                [formName]="inputObject.get('code')"></ngx-inline-message>
+          </div>
+          <div class="col-lg-6 form-group">
+            <label class="label">
+              {{ 'common.table.item_objects_name' | translate }} <span style="color: red">(*)</span>
+            </label>
+            <input type="text" formControlName="name" nbInput fullWidth trim="blur"
+                   [ngClass]="{'status-danger': this.inputObject.get('name').touched && this.inputObject.get('name').errors}">
+            <ngx-inline-message [message]="'common.table.item_objects_name'|translate"
+                                [formName]="inputObject.get('name')"></ngx-inline-message>
+          </div>
+          <div class="col-lg-6 form-group">
+            <label class="label">
+              {{ 'common.table.item_url' | translate }}
+            </label>
+            <input type="text" formControlName="path" nbInput fullWidth trim="blur"
+                   [ngClass]="{'status-danger': this.inputObject.get('path').touched && this.inputObject.get('path').errors}">
+
+          </div>
+          <div class="col-lg-6 form-group">
+            <label class="label">
+              {{ 'common.table.item_icon' | translate }}
+            </label>
+            <input type="text" formControlName="icon" nbInput fullWidth trim="blur"
+                   [ngClass]="{'status-danger': this.inputObject.get('icon').touched && this.inputObject.get('icon').errors}">
+
+          </div>
+          <div class="col-lg-6 form-group">
+            <label class="label">
+              {{ 'common.table.item_status' | translate }} <span style="color: red">(*)</span>
+            </label>
+            <nb-toggle style="display: block !important;" fullWidth formControlName="status"></nb-toggle>
+            <ngx-inline-message [message]="'common.table.item_status'|translate"
+                                [formName]="inputObject.get('status')"></ngx-inline-message>
+
+          </div>
+          <div class="col-lg-6 form-group">
+            <label class="label">
+              {{ 'common.table.item_type' | translate }} <span style="color: red">(*)</span>
+            </label>
+            <!--            <nb-toggle style="display: block !important;" fullWidth formControlName="type"></nb-toggle>-->
+            <ng-select fullWidth appendTo="body" (change)="onSelectType($event)"
+                       placeholder="{{'common.placeHolder' |translate}}"
+                       notFoundText="{{'common.notFoundText' |translate}}"
+                       clearAllText="{{'common.clearAllText' |translate}}"
+                       formControlName="type">
+              <ng-option  *ngFor="let item of listType" [value]="item.code"> {{ item.name | translate }}
+              </ng-option>
+            </ng-select>
+            <ngx-inline-message [message]="'common.table.item_type'|translate"
+                                [formName]="inputObject.get('type')"></ngx-inline-message>
+
+          </div>
+          <div class="col-lg-6 form-group">
+            <label class="label">
+              {{ 'common.table.item_objects_paren' | translate }}
+            </label>
+            <ngx-dropdown-treeview-select [items]="item"
+                                          [value]="inputObject.get('parenId').value"
+                                          [config]="treeViewConfig"
+                                          class="dropdown-treeview"
+                                          (valueChange)="parenIdChange($event)">
+            </ngx-dropdown-treeview-select>
+          </div>
+          <div class="col-lg-12 form-group">
+            <label class="label">
+              {{ 'common.table.item_description' | translate }}
+            </label>
+            <textarea rows="3" type="text" formControlName="description" nbInput fullWidth trim="blur"
+                      [ngClass]="{'status-danger': this.inputObject.get('description').touched && this.inputObject.get('description').errors}">
+            </textarea>
+          </div>
+        </div>
+      </div>
+    </form>
+  </nb-card-body>
+  <nb-card-footer class="text-right">
+    <button nbButton type="button" status="primary" (click)="submit()"
+            id="dialogCancelBtn">{{ 'common.save' | translate }}</button>
+    <button nbButton type="button" nbButton (click)="cancel()" class="ml-2"> {{ 'common.cancel' | translate }} </button>
+  </nb-card-footer>
+</nb-card>

@@ -1,0 +1,60 @@
+<nb-card style="position: relative" nbSpinnerSize="giant" nbSpinnerStatus="primary" [nbSpinner]="loading"  fullWidth>
+  <nb-card-header class="card-header-title">{{ title }}
+    <div class="bt-action">
+        <span>
+          <button ghost size="tiny" nbButton class="objLink float-right" (click)="ref.close()">
+            <nb-icon icon="close-outline"></nb-icon>
+          </button>
+        </span>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="inputSize">
+      <div class="mb-4">
+        <div class="row">
+          <div class="col-lg-6 form-group">
+            <label class="label">
+              {{ 'common.table.item_size_code' | translate }} <span style="color: red">(*)</span>
+            </label>
+            <input class="custom-border" type="text" formControlName="code" nbInput fullWidth trim="blur"
+                   [ngClass]="{'status-danger': this.inputSize.get('code').touched && this.inputSize.get('code').errors}">
+            <ngx-inline-message [message]="'common.table.item_size_code'|translate"
+                                [formName]="inputSize.get('code')"></ngx-inline-message>
+          </div>
+
+          <div class="col-lg-6 form-group">
+            <label class="label">
+              {{ 'common.table.item_size_name' | translate }} <span style="color: red">(*)</span>
+            </label>
+            <input class="custom-border" formControlName="name" type="text" nbInput fullWidth trim="blur"
+                   [ngClass]="{'status-danger': this.inputSize.get('name').touched && this.inputSize.get('name').errors}">
+            <ngx-inline-message [message]="'common.table.item_size_name'|translate"
+                                [formName]="inputSize.get('name')"></ngx-inline-message>
+          </div>
+          <div class="col-lg-6 form-group">
+            <label class="label">
+              {{ 'common.table.item_description' | translate }}
+            </label>
+            <textarea rows="3" type="text" formControlName="description" nbInput fullWidth trim="blur"
+                      [ngClass]="{'status-danger': this.inputSize.get('description').touched && this.inputSize.get('description').errors}">
+            </textarea>
+          </div>
+          <div class="col-lg-6 form-group">
+            <label class="label">
+              {{ 'common.table.item_status' | translate }} <span style="color: red">(*)</span>
+            </label>
+            <nb-toggle style="display: block !important;" fullWidth formControlName="status"></nb-toggle>
+            <ngx-inline-message [message]="'common.table.item_status'|translate"
+                                [formName]="inputSize.get('status')"></ngx-inline-message>
+          </div>
+
+        </div>
+      </div>
+    </form>
+  </nb-card-body>
+  <nb-card-footer class="text-right">
+    <button nbButton type="button" status="primary" (click)="submit()"
+            id="dialogCancelBtn">{{ 'common.save' | translate }}</button>
+    <button nbButton type="button" nbButton (click)="cancel()" class="ml-2"> {{ 'common.cancel' | translate }} </button>
+  </nb-card-footer>
+</nb-card>

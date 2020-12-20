@@ -1,0 +1,12 @@
+@import '../../../../@theme/styles/themes';
+@include nb-install-component() {
+  nb-card {
+    min-width: 75vw;
+    min-height: 50vh;
+    max-height: 80vh;
+  }
+}
+
+.map-module-dialog {
+  max-width: 90vw;
+}

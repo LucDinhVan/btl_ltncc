@@ -1,0 +1,122 @@
+<div class="row" [nbSpinner]="isLoad" nbSpinnerSize="giant" nbSpinnerStatus="primary">
+  <div class="col-lg-12">
+    <nb-card>
+      <nb-card-header class="d-flex header">
+        <label> {{ 'objects.title' | translate }}</label>
+        <button nbButton status="primary" size="tiny" class="ml-auto" (click)="open(null)">
+          <nb-icon icon="plus" pack="eva"></nb-icon>
+          {{ 'objects.title_add' | translate }}
+        </button>
+      </nb-card-header>
+      <nb-card-body>
+        <div class="mb-4">
+<!--          <div class="row">-->
+<!--            <div class="col-lg-4 form-group">-->
+<!--              <label class="label">-->
+<!--                {{ 'common.table.item_objects_code' | translate }}-->
+<!--              </label>-->
+<!--              <input (keyup.enter)="search()" nbInput fullWidth [(ngModel)]="paramSearch.code">-->
+<!--            </div>-->
+<!--            <div class="col-lg-4 form-group">-->
+<!--              <label class="label">-->
+<!--                {{ 'common.table.item_objects_name' | translate }}-->
+<!--              </label>-->
+<!--              <input (keyup.enter)="search()" nbInput fullWidth [(ngModel)]="paramSearch.name">-->
+<!--            </div>-->
+<!--            <div class="col-lg-4 form-group">-->
+<!--              <label class="label">-->
+<!--                {{ 'common.table.item_status' | translate }}-->
+<!--              </label>-->
+<!--              <ng-select fullWidth appendTo="body"-->
+<!--                         placeholder="{{'common.placeHolder' |translate}}"-->
+<!--                         notFoundText="{{'common.notFoundText' |translate}}"-->
+<!--                         clearAllText="{{'common.clearAllText' |translate}}"-->
+<!--                         [(ngModel)]="paramSearch.status">-->
+<!--                <ng-option *ngFor="let item of listStatus" [value]="item.code"> {{ item.name | translate }}-->
+<!--                </ng-option>-->
+<!--              </ng-select>-->
+<!--            </div>-->
+<!--            <div class="col-lg-4 form-group">-->
+<!--              <label class="label">-->
+<!--                {{ 'common.table.item_objects_paren' | translate }}-->
+<!--              </label>-->
+<!--              <ng-select fullWidth appendTo="body"-->
+<!--                         placeholder="{{'common.placeHolder' |translate}}"-->
+<!--                         notFoundText="{{'common.notFoundText' |translate}}"-->
+<!--                         clearAllText="{{'common.clearAllText' |translate}}"-->
+<!--                         [(ngModel)]="paramSearch.parentId">-->
+<!--                <ng-option *ngFor="let item of dataParent" [value]="item.id"> {{ item.name }}-->
+<!--                </ng-option>-->
+<!--              </ng-select>-->
+<!--            </div>-->
+<!--            <div class="form-group col-lg-12 text-center">-->
+<!--              <button nbButton (click)="search()"> {{ 'common.search' | translate }}-->
+<!--                <nb-icon icon="search-outline"></nb-icon>-->
+<!--              </button>-->
+<!--            </div>-->
+<!--          </div>-->
+        </div>
+        <ngx-datatable ngxResizeWatcher class="material"
+                       [columnMode]="'flex'"
+                       [rows]="rows"
+                       [columns]="columns"
+                       rowHeight="auto"
+                       [footerHeight]="50"
+                       [headerHeight]="50"
+                       [treeFromRelation]="'parenId'"
+                       [treeToRelation]="'id'"
+                       (treeAction)="onTreeAction($event)"
+                       [messages]="{ emptyMessage: 'common.notFoundText' | translate, totalMessage: 'common.totalMessage' | translate }">
+          <ng-container *ngFor="let col of columns">
+            <ngx-datatable-column prop="{{col.prop}}" name="{{col.name}}" [flexGrow]="col.flexGrow"
+                                  [isTreeColumn]="col.isTree">
+              <ng-template let-column="column" ngx-datatable-header-template>
+                {{ column.name | translate }}
+              </ng-template>
+              <ng-template let-value="value" ngx-datatable-cell-template let-row="row" let-rowIndex='rowIndex'>
+                <ng-container *ngIf="col.prop ==='index'" class="index-col">
+                  {{ rowIndex + 1 }}
+                </ng-container>
+                <ng-container *ngIf="col.prop === 'code'">
+                  {{value}}
+                </ng-container>
+                <ng-container
+                  *ngIf="col.prop !=='action_btn' && col.prop !=='updateTime'
+                  && col.prop !=='description' && col.prop !=='status' && col.prop !=='code' ">
+                  <span class="row-data-show" title="{{value}}">{{ value }}</span>
+                </ng-container>
+                <ng-container *ngIf="col.prop ==='description'" class="text-right">
+                  <span class="row-data-show"
+                        title="{{value}}">{{value.length > 50 ? value.substring(0, 50).concat('...') : value}}</span>
+                </ng-container>
+                <ng-container *ngIf="col.prop ==='status'">
+                  {{ 'common.status.' + value | translate }}
+                </ng-container>
+                <ng-container *ngIf="col.prop === 'map_action' && row.treeStatus == 'disabled'">
+                  <button class="p-1" nbButton ghost status="info" (click)="openMapModule(row)">
+                    <nb-icon icon="link-outline" pack="eva" size="tiny"></nb-icon>
+                  </button>
+                </ng-container>
+                <ng-container *ngIf="col.prop ==='updateTime'">
+                  {{value | date:'dd/MM/yyyy HH:mm:ss'}}
+                </ng-container>
+                <ng-container *ngIf="col.prop ==='action_btn'" class="text-right">
+                  <div>
+                    <button class="p-1" nbButton status="info" ghost title="{{ 'common.edit' | translate }}"
+                            (click)="open(row)">
+                      <nb-icon icon="edit-outline" pack="eva" size="tiny"></nb-icon>
+                    </button>
+                    <button class="p-1" nbButton status="danger" ghost title="{{ 'common.delete' | translate }}"
+                            (click)="delete(row)">
+                      <nb-icon icon="trash-2-outline" pack="eva" size="tiny"></nb-icon>
+                    </button>
+                  </div>
+                </ng-container>
+              </ng-template>
+            </ngx-datatable-column>
+          </ng-container>
+        </ngx-datatable>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>

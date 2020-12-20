@@ -1,0 +1,50 @@
+.p-b-32, .p-tb-32, .p-all-32 {padding-bottom: 32px;}
+.p-t-75, .p-tb-75, .p-all-75 {padding-top: 75px;}
+.bg3 {background-color: #222;}
+.cl7 {color: #b2b2b2;}
+.p-t-27, .p-tb-27, .p-all-27 {padding-top: 27px;}
+.fs-18 {font-size: 18px;}
+.hov-cl1:hover {color: #717fe0;}
+.m-r-16, .m-lr-16, .m-all-16 {margin-right: 16px;}
+.p-b-50, .p-tb-50, .p-all-50 {padding-bottom: 50px;}
+.wrap-input1 {
+  position: relative;
+  border-bottom: 2px solid rgba(204,204,204, 0.1);
+}
+.w-full {width: 100%;}
+.p-b-4, .p-tb-4, .p-all-4 {padding-bottom: 4px;}
+
+.input1 {
+  background-color: transparent;
+  width: 100%;
+}
+.bg-none {background-color: transparent;}
+
+.plh1::-webkit-input-placeholder { color: #b2b2b2;}
+.plh1:-moz-placeholder { color: #b2b2b2;}
+.plh1::-moz-placeholder { color: #b2b2b2;}
+.plh1:-ms-input-placeholder { color: #b2b2b2;}
+.stext-301 {
+  font-family: Montserrat-Bold;
+  font-size: 15px;
+  line-height: 1.6;
+  text-transform: uppercase;
+}
+.hov-cl0:hover {color: #fff;}
+.cl0 {color: #fff;}
+
+.stext-107 {
+  font-family: Poppins-Regular;
+  font-size: 13px;
+  line-height: 1.923;
+}
+.hov-cl1:hover {color: #717fe0;}
+.trans-04 {
+  -webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  -moz-transition: all 0.4s;
+  transition: all 0.4s;
+}
+.size-201 {
+  max-width: 270px;
+}

@@ -1,0 +1,11 @@
+<nb-card nbSpinnerSize="giant" nbSpinnerStatus="primary" [nbSpinner]="loading"  style="height: 100%" fullWidth>
+  <nb-card-header class="card-header-title"> {{ title }}</nb-card-header>
+  <nb-card-body>
+    <ngx-treeview [config]="treeViewConfig" [items]="dataItems"
+                  (selectedChange)="values = $event"></ngx-treeview>
+  </nb-card-body>
+  <nb-card-footer class="text-right">
+    <button nbButton type="button" status="primary" (click)="submit()" id="dialogCancelBtn">{{ 'common.save' | translate }}</button>
+    <button nbButton type="button" nbButton (click)="cancel()" class="ml-2"> {{ 'common.cancel' | translate }} </button>
+  </nb-card-footer>
+</nb-card>

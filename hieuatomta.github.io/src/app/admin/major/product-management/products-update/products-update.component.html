@@ -1,0 +1,93 @@
+<nb-card style="position: relative" nbSpinnerSize="giant" nbSpinnerStatus="primary" [nbSpinner]="loading" fullWidth>
+  <nb-card-header class="card-header-title">{{ title }}
+    <div class="bt-action">
+        <span>
+          <button ghost size="tiny" nbButton class="objLink float-right" (click)="ref.close()">
+            <nb-icon icon="close-outline"></nb-icon>
+          </button>
+        </span>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="inputProduct">
+      <div class="mb-4">
+        <div class="row">
+          <div class="col-lg-6 form-group">
+            <label class="label">
+              {{ 'common.table.item_product_code' | translate }} <span style="color: red">(*)</span>
+            </label>
+            <input class="custom-border" type="text" formControlName="code" nbInput fullWidth trim="blur"
+                   [ngClass]="{'status-danger': this.inputProduct.get('code').touched && this.inputProduct.get('code').errors}">
+            <ngx-inline-message [message]="'common.table.item_product_code'|translate"
+                                [formName]="inputProduct.get('code')"></ngx-inline-message>
+          </div>
+
+          <div class="col-lg-6 form-group">
+            <label class="label">
+              {{ 'common.table.item_product_name' | translate }} <span style="color: red">(*)</span>
+            </label>
+            <input class="custom-border" formControlName="name" type="text" nbInput fullWidth trim="blur"
+                   [ngClass]="{'status-danger': this.inputProduct.get('name').touched && this.inputProduct.get('name').errors}">
+            <ngx-inline-message [message]="'common.table.item_product_name'|translate"
+                                [formName]="inputProduct.get('name')"></ngx-inline-message>
+          </div>
+          <div class="col-lg-6 form-group">
+            <label class="label">
+              {{ 'common.table.item_product_cost' | translate }} <span style="color: red">(*)</span>
+            </label>
+            <input class="custom-border" formControlName="cost" type="text" nbInput fullWidth trim="blur"
+                   [ngClass]="{'status-danger': this.inputProduct.get('cost').touched && this.inputProduct.get('cost').errors}">
+            <ngx-inline-message [message]="'common.table.item_product_cost'|translate"
+                                [formName]="inputProduct.get('cost')"></ngx-inline-message>
+          </div>
+          <div class="col-lg-6 form-group">
+            <label class="label">
+              {{ 'common.table.item_product_paren_object' | translate }}
+            </label>
+            <ngx-dropdown-treeview-select [items]="item"
+                                          [value]="inputProduct.get('idParen').value"
+                                          [config]="treeViewConfig"
+                                          class="dropdown-treeview"
+                                          (valueChange)="parenIdChange($event)">
+            </ngx-dropdown-treeview-select>
+            <ngx-inline-message [message]="'common.table.item_product_paren_object'|translate"
+                                [formName]="inputProduct.get('idParen')"></ngx-inline-message>
+          </div>
+          <div class="col-lg-6 form-group">
+            <label class="label">
+              {{ 'common.table.item_description' | translate }}
+            </label>
+            <textarea rows="3" type="text" formControlName="description" nbInput fullWidth trim="blur"
+                      [ngClass]="{'status-danger': this.inputProduct.get('description').touched && this.inputProduct.get('description').errors}">
+            </textarea>
+          </div>
+
+          <div class="col-lg-6 form-group">
+            <label class="label">
+              {{ 'common.table.item_status' | translate }} <span style="color: red">(*)</span>
+            </label>
+            <ng-select [clearAllText]="'common.clearAllText'"
+                       placeholder="{{'common.placeHolder' |translate}}"
+                       notFoundText="{{'common.notFoundText' |translate}}"
+                       fullWidth formControlName="status">
+              <ng-option *ngFor="let item of listStatus" [value]="item.code">
+                <span title="{{item.name | translate }}" class="cut-text"> {{ item.name | translate }}</span>
+              </ng-option>
+            </ng-select>
+            <!--            <nb-toggle style="display: block !important;" fullWidth formControlName="status"></nb-toggle>-->
+            <ngx-inline-message [message]="'common.table.item_status'|translate"
+                                [formName]="inputProduct.get('status')"></ngx-inline-message>
+          </div>
+          <div class="col-lg-12 form-group">
+          </div>
+
+        </div>
+      </div>
+    </form>
+  </nb-card-body>
+  <nb-card-footer class="text-right">
+    <button nbButton type="button" status="primary" (click)="submit()" [disabled]="inputProduct.invalid"
+            id="dialogCancelBtn">{{ 'common.save' | translate }}</button>
+    <button nbButton type="button" nbButton (click)="cancel()" class="ml-2"> {{ 'common.cancel' | translate }} </button>
+  </nb-card-footer>
+</nb-card>

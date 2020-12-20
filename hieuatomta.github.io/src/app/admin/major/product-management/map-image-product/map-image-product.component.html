@@ -1,0 +1,87 @@
+<div class="map-module-dialog" nbSpinnerSize="giant" nbSpinnerStatus="primary" [nbSpinner]="loading">
+  <nb-card>
+    <nb-card-header>
+      {{ title }}<span class="font-weight-bold text-danger">{{ data.name }}</span>
+      <div class="bt-action">
+        <span>
+          <button ghost size="tiny" nbButton class="objLink float-right" (click)="cancel()">
+            <nb-icon icon="close-outline"></nb-icon>
+          </button>
+        </span>
+      </div>
+    </nb-card-header>
+    <nb-card-body>
+        <div *ngIf="currentFile" class="progress">
+          <div
+            class="progress-bar progress-bar-info progress-bar-striped"
+            role="progressbar"
+            attr.aria-valuenow="{{ progress }}"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            [ngStyle]="{ width: progress + '%' }"
+          >
+            {{ progress }}%
+          </div>
+        </div>
+
+        <label class="btn btn-default">
+          <input type="file" accept="image/*" (change)="selectFile($event)"/>
+        </label>
+
+        <button class="btn btn-success" [disabled]="canUpdate" (click)="upload()">
+          Upload
+        </button>
+
+        <div class="alert alert-light" role="alert">{{ message }}</div>
+
+        <ngx-datatable ngxResizeWatcher class="material"
+                       [columnMode]="'flex'"
+                       [rows]="rows"
+                       [columns]="columns"
+                       rowHeight="auto"
+                       [footerHeight]="50"
+                       [headerHeight]="50"
+                       [messages]="{ emptyMessage: 'common.notFoundText' | translate, totalMessage: 'common.totalMessage' | translate }">
+          <ng-container *ngFor="let col of columns">
+            <ngx-datatable-column prop="{{col.prop}}" name="{{col.name}}" [flexGrow]="col.flexGrow">
+              <ng-template let-column="column" ngx-datatable-header-template>
+                {{ column.name | translate }}
+              </ng-template>
+              <ng-template let-value="value" ngx-datatable-cell-template let-row="row" let-rowIndex='rowIndex'>
+                <ng-container
+                  *ngIf=" col.prop ==='name'"
+                  class="text-right">
+                        <span class="row-data-show"
+                              title="{{value}}">{{value.length > 50 ? value.substring(0, 50).concat('...') : value}}</span>
+                </ng-container>
+                <ng-container *ngIf="col.prop ==='imageLink'">
+                  <img style="width: 100%; height: 100%"
+                    src="{{value}}"
+                    height="1536" width="2048"/>
+                  <!--                  {{  'common.status.' + value | translate }}-->
+                </ng-container>
+                <ng-container *ngIf="col.prop ==='status'">
+                  {{  'common.status.' + value | translate }}
+                </ng-container>
+                <ng-container *ngIf="col.prop ==='updateTime'">
+                  {{ value | date:'dd/MM/yyyy'}}
+                </ng-container>
+                <ng-container *ngIf="col.prop ==='action_btn'" class="text-right">
+                  <div>
+                    <button class="p-1" nbButton status="danger" ghost title="{{ 'common.lock' | translate }}"
+                            (click)="lock(row)">
+                      <nb-icon icon="lock-outline" pack="eva" size="tiny"></nb-icon>
+                    </button>
+                    <button class="p-1" nbButton status="danger" ghost title="{{ 'common.delete' | translate }}"
+                            (click)="deleteSizeColor(row)">
+                      <nb-icon icon="trash-2-outline" pack="eva" size="tiny"></nb-icon>
+                    </button>
+                  </div>
+                </ng-container>
+              </ng-template>
+            </ngx-datatable-column>
+          </ng-container>
+        </ngx-datatable>
+    </nb-card-body>
+  </nb-card>
+</div>
